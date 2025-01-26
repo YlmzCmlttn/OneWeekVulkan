@@ -155,6 +155,11 @@ namespace learnVulkan
         }
     }
 
+    void Pipeline::bind(VkCommandBuffer commandBuffer){
+        //IF none setting can be added here.
+        vkCmdBindPipeline(commandBuffer,VK_PIPELINE_BIND_POINT_GRAPHICS,graphicsPipeline); //COMPUTE AD RAY_TRACING PIPELINE
+    }
+
 
     // Function to set up a default pipeline configuration structure for Vulkan.
     // This function initializes various pipeline state structures with default values
