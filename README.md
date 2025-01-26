@@ -1,5 +1,6 @@
 # OneWeekVulkan
 Learning Vulkan in One Week
 
-01.Create a application and opening window.
-00.Create a window and count extions.
+02. Graphics Pipeline Overview.
+01. Create an application and open a window.  
+00. Create a window and count extensions.  

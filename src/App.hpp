@@ -1,5 +1,6 @@
 #pragma once
 #include "Window.hpp"
+#include "Pipeline.hpp"
 
 namespace learnVulkan
 {
@@ -7,6 +8,7 @@ namespace learnVulkan
     {
     private:
         Window m_Window{WIDTH,HEIGHT,"Hello Vulkan!"};
+        Pipeline pipeline{"../src/shaders/compiled/simple_shader.vert.spv", "../src/shaders/compiled/simple_shader.frag.spv"};
     public:
         App(/* args */) = default;
         App(const App&) = delete;
