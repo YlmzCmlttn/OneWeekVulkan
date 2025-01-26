@@ -1,3 +1,11 @@
+#build
+build
+build/
+build/*
+#3rdParty
+3rdParty
+3rdParty/
+3rdParty/*
 # Prerequisites
 *.d
 
