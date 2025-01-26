@@ -1,5 +1,7 @@
 #include "Window.hpp"
 
+#include <stdexcept>
+
 namespace learnVulkan {
     Window::Window(int w, int h, std::string name) : width{w}, height{h}, windowName{name} {
         initWindow();
@@ -17,5 +19,12 @@ namespace learnVulkan {
 
       window = glfwCreateWindow(width, height, windowName.c_str(), nullptr, nullptr);
       glfwSetWindowUserPointer(window, this);
-  }
+    }
+
+    void Window::createWindowSurface(VkInstance instance, VkSurfaceKHR* surface){
+      if(glfwCreateWindowSurface(instance,window,nullptr,surface) != VK_SUCCESS) {
+        throw std::runtime_error("Failed to create Window Surface");
+      }
+    }
+
 }  // namespace learnVulkan

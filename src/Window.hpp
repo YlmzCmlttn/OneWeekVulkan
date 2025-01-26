@@ -18,6 +18,8 @@ class Window{
 
   bool shouldClose() { return glfwWindowShouldClose(window); }
 
+  void createWindowSurface(VkInstance instance, VkSurfaceKHR* surface);
+
  private:
   void initWindow();
 
