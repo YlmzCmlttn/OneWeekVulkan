@@ -9,3 +9,4 @@ Learning Vulkan in One Week
 6. Command Buffers Overview.
 7. Vertex Buffers.
 8. Fragment Interpolation
+9. Swap Chain Recreation & Dynamic Viewports

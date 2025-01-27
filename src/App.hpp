@@ -15,7 +15,8 @@ namespace learnVulkan
     private:
         Window m_Window{WIDTH,HEIGHT,"Hello Vulkan!"};
         Device m_Device{m_Window};
-        SwapChain m_SwapChain{m_Device,m_Window.getExtent()};
+        //SwapChain m_SwapChain{m_Device,m_Window.getExtent()};
+        std::unique_ptr<SwapChain> m_SwapChain;
         std::unique_ptr<Pipeline> m_Pipeline;
         VkPipelineLayout pipelineLayout;
         std::vector<VkCommandBuffer> commandBuffers;
@@ -27,6 +28,9 @@ namespace learnVulkan
         void createPipeline();
         void createCommandBuffers();
         void drawFrame();
+        void freeCommandBuffers();
+        void recreateSwapChain();
+        void recordCommandBuffer(int imageIndex);
     public:
         App(/* args */);
         ~App();
