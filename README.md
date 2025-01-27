@@ -8,3 +8,4 @@ Learning Vulkan in One Week
 5. Fixed Function Pipeline Stages 
 6. Command Buffers Overview.
 7. Vertex Buffers.
+8. Fragment Interpolation
