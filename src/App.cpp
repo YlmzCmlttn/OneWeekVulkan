@@ -5,6 +5,7 @@
 namespace learnVulkan{
 
     App::App() {
+        loadModels();
         createPipelineLayout();
         createPipeline();
         createCommandBuffers();
@@ -27,6 +28,11 @@ namespace learnVulkan{
         }
 
         vkDeviceWaitIdle(m_Device.device()); //CPU block untill everything finished;
+    }
+
+    void App::loadModels() {
+        std::vector<Model::Vertex> vertices{{{0.0f, -0.5f}}, {{0.5f, 0.5f}}, {{-0.5f, 0.5f}}};
+        m_Model = std::make_unique<Model>(m_Device, vertices);
     }
 
     // Function to create a pipeline layout in Vulkan.
@@ -131,7 +137,9 @@ namespace learnVulkan{
             m_Pipeline->bind(commandBuffers[i]);
 
             // Issue a draw command.
-            vkCmdDraw(commandBuffers[i], 3, 1, 0, 0);  //DRAW count instances is also here like particles if you use offset we can use it.
+            //vkCmdDraw(commandBuffers[i], 3, 1, 0, 0);  //DRAW count instances is also here like particles if you use offset we can use it.
+            m_Model->bind(commandBuffers[i]);
+            m_Model->draw(commandBuffers[i]);
             // Draw 3 vertices to form a single triangle. No instances are used (instance count = 1).
 
             // End the render pass.
@@ -148,7 +156,6 @@ namespace learnVulkan{
         
         uint32_t imageIndex;
         auto result = m_SwapChain.acquireNextImage(&imageIndex);
-        std::cout<<"drawFrame: "<<imageIndex<<std::endl;
         if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
             throw std::runtime_error("failed to acquire swap chain image");
         }

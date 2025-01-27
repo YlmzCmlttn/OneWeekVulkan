@@ -5,4 +5,6 @@ Learning Vulkan in One Week
 2. Create an application and open a window.  
 3. Graphics Pipeline Overview.
 4. Device Setup and Pipeline continue.
-5. Fixed Function Pipeline Stages.
+5. Fixed Function Pipeline Stages 
+6. Command Buffers Overview.
+7. Vertex Buffers.

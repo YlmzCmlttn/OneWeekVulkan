@@ -1,4 +1,5 @@
 #include "Pipeline.hpp"
+#include "Model.hpp"
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
@@ -87,10 +88,18 @@ namespace learnVulkan
         // Since no vertex data is passed here, the binding and attribute descriptions are null.
         VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
         vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-        vertexInputInfo.vertexBindingDescriptionCount = 0; // No bindings.
-        vertexInputInfo.pVertexBindingDescriptions = nullptr; // Optional.
-        vertexInputInfo.vertexAttributeDescriptionCount = 0; // No attributes.
-        vertexInputInfo.pVertexAttributeDescriptions = nullptr; // Optional.
+        // vertexInputInfo.vertexBindingDescriptionCount = 0; // No bindings.
+        // vertexInputInfo.pVertexBindingDescriptions = nullptr; // Optional.
+        // vertexInputInfo.vertexAttributeDescriptionCount = 0; // No attributes.
+        // vertexInputInfo.pVertexAttributeDescriptions = nullptr; // Optional.
+
+        auto bindingDescriptions = Model::Vertex::getBindingDescriptions();
+        auto attributeDescriptions = Model::Vertex::getAttributeDescriptions();
+
+        vertexInputInfo.vertexAttributeDescriptionCount =static_cast<uint32_t>(attributeDescriptions.size());
+        vertexInputInfo.vertexBindingDescriptionCount = static_cast<uint32_t>(bindingDescriptions.size());
+        vertexInputInfo.pVertexAttributeDescriptions = attributeDescriptions.data();
+        vertexInputInfo.pVertexBindingDescriptions = bindingDescriptions.data();
 
         // Define the viewport state, using the viewport and scissor defined in configInfo.
         VkPipelineViewportStateCreateInfo viewportState = {};

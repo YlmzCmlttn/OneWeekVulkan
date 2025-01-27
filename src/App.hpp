@@ -1,5 +1,6 @@
 #pragma once
 #include "Window.hpp"
+#include "Model.hpp"
 #include "Device.hpp"
 #include "Pipeline.hpp"
 #include "SwapChain.hpp"
@@ -18,8 +19,10 @@ namespace learnVulkan
         std::unique_ptr<Pipeline> m_Pipeline;
         VkPipelineLayout pipelineLayout;
         std::vector<VkCommandBuffer> commandBuffers;
+        std::unique_ptr<Model> m_Model;
         //Pipeline m_Pipeline{m_Device,"../src/shaders/compiled/simple_shader.vert.spv", "../src/shaders/compiled/simple_shader.frag.spv",Pipeline::defaultPipelineConfigInfo(WIDTH,HEIGHT)};
 
+        void loadModels();
         void createPipelineLayout();
         void createPipeline();
         void createCommandBuffers();
