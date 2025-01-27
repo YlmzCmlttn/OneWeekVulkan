@@ -3,7 +3,18 @@
 #include "App.hpp"
 #include <iostream>
 #include <cassert>
+
+// libs
+#define GLM_FORCE_RADIANS
+#define GLM_FORCE_DEPTH_ZERO_TO_ONE
+#include <glm/glm.hpp>
 namespace learnVulkan{
+
+    struct SimplePushConstantData {
+        glm::vec2 offset;
+        alignas(16) glm::vec3 color;
+    };
+
 
     App::App() {
         loadModels();
@@ -62,6 +73,11 @@ namespace learnVulkan{
     // The pipeline layout defines the interface between the application and the pipeline,
     // including descriptor sets and push constants.
     void App::createPipelineLayout() {
+        VkPushConstantRange pushConstantRange{};
+        pushConstantRange.stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
+        pushConstantRange.offset = 0;
+        pushConstantRange.size = sizeof(SimplePushConstantData);
+        
         // Define the pipeline layout creation information structure.
         VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
         pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO; 
@@ -73,10 +89,10 @@ namespace learnVulkan{
         pipelineLayoutInfo.pSetLayouts = nullptr; 
         // Pointer to the descriptor set layouts (none are provided in this case).
 
-        pipelineLayoutInfo.pushConstantRangeCount = 0; 
+        pipelineLayoutInfo.pushConstantRangeCount = 1; 
         // Number of push constant ranges being defined. Here, push constants are not used.
 
-        pipelineLayoutInfo.pPushConstantRanges = nullptr; 
+        pipelineLayoutInfo.pPushConstantRanges = &pushConstantRange; 
         // Pointer to an array of push constant ranges (not defined here).
 
         // Create the pipeline layout using the logical Vulkan device.
@@ -91,7 +107,7 @@ namespace learnVulkan{
 
         assert(m_SwapChain != nullptr && "Cannot create pipeline before swap chain");
         assert(pipelineLayout != nullptr && "Cannot create pipeline before pipeline layout");
-        
+
         PipelineConfigInfo pipelineConfig{};
         Pipeline::defaultPipelineConfigInfo(pipelineConfig);        
         pipelineConfig.renderPass = m_SwapChain->getRenderPass();
@@ -184,8 +200,26 @@ namespace learnVulkan{
 
         // Issue a draw command.
         //vkCmdDraw(commandBuffers[imageIndex], 3, 1, 0, 0);  //DRAW count instances is also here like particles if you use offset we can use it.
+
+        static int frame = 30;
+        frame = (frame + 1) % 100;
+
         m_Model->bind(commandBuffers[imageIndex]);
-        m_Model->draw(commandBuffers[imageIndex]);
+        for (int j = 0; j < 4; j++) {
+            SimplePushConstantData push{};
+            push.offset = {-0.5f + frame * 0.02f, -0.4f + j * 0.25f};
+            push.color = {0.0f, 0.0f, 0.2f + 0.2f * j};
+
+            vkCmdPushConstants(
+                commandBuffers[imageIndex],
+                pipelineLayout,
+                VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT,
+                0,
+                sizeof(SimplePushConstantData),
+                &push);
+
+            m_Model->draw(commandBuffers[imageIndex]);
+        }
         // Draw 3 vertices to form a single triangle. No instances are used (instance count = 1).
 
         // End the render pass.
