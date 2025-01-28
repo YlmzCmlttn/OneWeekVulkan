@@ -1,9 +1,9 @@
 #pragma once
 #include "Window.hpp"
 #include "Model.hpp"
+#include "Renderer.hpp"
 #include "GameObject.hpp"
 #include "Device.hpp"
-#include "Pipeline.hpp"
 #include "SwapChain.hpp"
 
 
@@ -17,25 +17,11 @@ namespace learnVulkan
     private:
         Window m_Window{WIDTH,HEIGHT,"Hello Vulkan!"};
         Device m_Device{m_Window};
-        //SwapChain m_SwapChain{m_Device,m_Window.getExtent()};
-        std::unique_ptr<SwapChain> m_SwapChain;
-        std::unique_ptr<Pipeline> m_Pipeline;
-        VkPipelineLayout pipelineLayout;
-        std::vector<VkCommandBuffer> commandBuffers;
-        //std::unique_ptr<Model> m_Model;
+        Renderer m_Renderer{m_Window,m_Device};
         std::vector<GameObject> m_GameObjects;
-        //Pipeline m_Pipeline{m_Device,"../src/shaders/compiled/simple_shader.vert.spv", "../src/shaders/compiled/simple_shader.frag.spv",Pipeline::defaultPipelineConfigInfo(WIDTH,HEIGHT)};
 
         
         void loadGameObjects();
-        void createPipelineLayout();
-        void createPipeline();
-        void createCommandBuffers();
-        void drawFrame();
-        void freeCommandBuffers();
-        void recreateSwapChain();
-        void recordCommandBuffer(int imageIndex);
-        void renderGameObjects(VkCommandBuffer commandBuffer);
     public:
         App(/* args */);
         ~App();
