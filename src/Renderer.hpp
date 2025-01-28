@@ -27,7 +27,7 @@ namespace learnVulkan
         void freeCommandBuffers();
         void recreateSwapChain();
     public:
-
+        float getAspectRatio() const { return m_SwapChain->extentAspectRatio(); }
         VkRenderPass getSwapChainRenderPass() const { return m_SwapChain->getRenderPass(); }
         bool isFrameInProgress() const { return isFrameStarted; }
         VkCommandBuffer getCurrentCommandBuffer() const {
